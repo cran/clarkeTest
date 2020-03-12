@@ -1,0 +1,12 @@
+26c86635c9fd7bb854e7aebe15a9d13e *DESCRIPTION
+f81c10ee0a880119e64ff7a968c7a46b *NAMESPACE
+e072232c08b5ef62a8dbf43bcaca1db7 *R/clarkeTest.R
+bb4c20d5843c2557ec4d619fd8a28977 *R/data.r
+4a615880ded0c892459c30231f8d5913 *README.md
+fa83007ae9fbadf77de08567cb03651a *data/conflictData.rda
+8bc12f516954f895e500a6396fa68834 *man/clarke_test.Rd
+679d198b8a8aa62df6d1c035374c0384 *man/conflictData.Rd
+cb1aa7aa7cae50eeddc3d259dbfd5f82 *man/figures/ct_sticker.png
+b765617b20cbd39e2639afd823e7151a *man/indivLogLiks.Rd
+0cf43a2eb7aa4074d12cf56a71c9f8df *man/nparams.Rd
+4ee72922b9bf83bcbf682fed46099ce5 *man/print.Rd
