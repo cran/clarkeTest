@@ -92,7 +92,7 @@ print.nonnest.test <- function(x, digits = x$digits, ...)
 ##' fitted in \code{model1} and \code{model2} respectively}
 ##' \item{\code{nobs}}{Number of observations of the dependent variable being
 ##' modeled}}
-##' @value An object of class \code{nonnest.test} with the following values:
+##' @returns An object of class \code{nonnest.test} with the following values:
 ##' \describe{
 ##' \item{stat}{The number of times model 1 is better than model 2}
 ##' \item{test}{Will always be "clarke".}
@@ -212,8 +212,20 @@ nonnest <- function(model1, model2){
     if (nobs(model2) != n)
       stop("model1 and model2 have different numbers of observations")
 
-    y1 <- model.response(model.frame(model1))
-    y2 <- model.response(model.frame(model2))
+    y1 <- try(model.response(model.frame(model1)))
+    if(inherits(y1, "try-error")){
+      y1 <- model1$y
+      if(is.null(y1)){
+        stop("must be able to extract y with model.response(model.frame(obj)) or obj$y\n")
+      }
+    }
+    y2 <- try(model.response(model.frame(model1)))
+    if(inherits(y2, "try-error")){
+      y2 <- model1$y
+      if(is.null(y2)){
+        stop("must be able to extract y with model.response(model.frame(obj)) or obj$y\n")
+      }
+    }
 
     ## check for equality of dependent variables
     if (!all.equal(y1, y2, check.attributes = FALSE))
@@ -302,6 +314,15 @@ indivLogLiks.lm <- function(model){
 
 ##' @rdname indivLogLiks
 ##' @export
+##' @method indivLogLiks orlm
+indivLogLiks.orlm <- function(model){
+  ans <- ll_fun.orlm(model)
+  return(ans)
+}
+
+
+##' @rdname indivLogLiks
+##' @export
 ##' @method indivLogLiks polr
 indivLogLiks.polr <- function(model){
   y <- as.numeric(model.response(model.frame(model)))
@@ -373,6 +394,14 @@ ll_fun.gaussian <- function(model){
   log(probs)
 }
 
+ll_fun.orlm <- function(obj){
+  y <- obj$y
+  res <- obj$residuals
+  sigma <- c(var(res) * (length(y) - 1)/(length(y) - length(obj$b.restr)))
+  dnorm(y, obj$fitted.values, sqrt(sigma), log=TRUE)
+}
+
+
 
 ##' Find number of parameters in model
 ##'
@@ -410,6 +439,13 @@ nparams.lm <- function(model){
 }
 
 ##' @rdname nparams
+##' @method nparams orlm
+##' @export
+nparams.orlm <- function(model){
+  length(model$b.restr)
+}
+
+##' @rdname nparams
 ##' @method nparams polr
 ##' @export
 nparams.polr <- function(model){
@@ -444,10 +480,18 @@ nparams.negbin <- function(model){
   length(coef(model)) + 1
 }
 
+##' @export
 ##' @method nobs multinom
 nobs.multinom <- function(object, ...){
   length(object$weights)
 }
+
+##' @export
+##' @method nobs orlm
+nobs.orlm <- function(object, ...){
+  length(object$y)
+}
+
 
 # ##' @method nobs mlogit
 # nobs.mlogit <- function(object, ...){

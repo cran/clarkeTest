@@ -4,6 +4,7 @@
 \alias{indivLogLiks}
 \alias{indivLogLiks.glm}
 \alias{indivLogLiks.lm}
+\alias{indivLogLiks.orlm}
 \alias{indivLogLiks.polr}
 \alias{indivLogLiks.clm}
 \alias{indivLogLiks.multinom}
@@ -15,6 +16,8 @@ indivLogLiks(model)
 \method{indivLogLiks}{glm}(model)
 
 \method{indivLogLiks}{lm}(model)
+
+\method{indivLogLiks}{orlm}(model)
 
 \method{indivLogLiks}{polr}(model)
 
